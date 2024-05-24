@@ -12,6 +12,7 @@ import numpy as np
 import PIL.Image
 import PIL.ImageFont
 import dnnlib
+import fickling
 
 #----------------------------------------------------------------------------
 # Convenience wrappers for pickle that are able to load data produced by
@@ -24,7 +25,7 @@ def open_file_or_url(file_or_url):
 
 def load_pkl(file_or_url):
     with open_file_or_url(file_or_url) as file:
-        return pickle.load(file, encoding='latin1')
+        return fickling.load(file, encoding='latin1')
 
 def save_pkl(obj, filename):
     with open(filename, 'wb') as file:
@@ -84,7 +85,7 @@ def apply_mirror_augment(minibatch):
 
 def parse_config_for_previous_run(run_dir):
     with open(os.path.join(run_dir, 'submit_config.pkl'), 'rb') as f:
-        data = pickle.load(f)
+        data = fickling.load(f)
     data = data.get('run_func_kwargs', {})
     return dict(train=data, dataset=data.get('dataset_args', {}))
 
