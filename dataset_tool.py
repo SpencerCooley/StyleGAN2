@@ -20,6 +20,7 @@ import PIL.Image
 import dnnlib.tflib as tflib
 
 from training import dataset
+import fickling
 
 #----------------------------------------------------------------------------
 
@@ -328,12 +329,11 @@ def create_mnistrgb(tfrecord_dir, mnist_dir, num_images=1000000, random_seed=123
 
 def create_cifar10(tfrecord_dir, cifar10_dir):
     print('Loading CIFAR-10 from "%s"' % cifar10_dir)
-    import pickle
     images = []
     labels = []
     for batch in range(1, 6):
         with open(os.path.join(cifar10_dir, 'data_batch_%d' % batch), 'rb') as file:
-            data = pickle.load(file, encoding='latin1')
+            data = fickling.load(file, encoding='latin1')
         images.append(data['data'].reshape(-1, 3, 32, 32))
         labels.append(data['labels'])
     images = np.concatenate(images)
@@ -355,9 +355,8 @@ def create_cifar10(tfrecord_dir, cifar10_dir):
 
 def create_cifar100(tfrecord_dir, cifar100_dir):
     print('Loading CIFAR-100 from "%s"' % cifar100_dir)
-    import pickle
     with open(os.path.join(cifar100_dir, 'train'), 'rb') as file:
-        data = pickle.load(file, encoding='latin1')
+        data = fickling.load(file, encoding='latin1')
     images = data['data'].reshape(-1, 3, 32, 32)
     labels = np.array(data['fine_labels'])
     assert images.shape == (50000, 3, 32, 32) and images.dtype == np.uint8
@@ -377,12 +376,11 @@ def create_cifar100(tfrecord_dir, cifar100_dir):
 
 def create_svhn(tfrecord_dir, svhn_dir):
     print('Loading SVHN from "%s"' % svhn_dir)
-    import pickle
     images = []
     labels = []
     for batch in range(1, 4):
         with open(os.path.join(svhn_dir, 'train_%d.pkl' % batch), 'rb') as file:
-            data = pickle.load(file, encoding='latin1')
+            data = fickling.load(file, encoding='latin1')
         images.append(data[0])
         labels.append(data[1])
     images = np.concatenate(images)
