@@ -5,10 +5,9 @@
 # https://nvlabs.github.io/stylegan2/license.html
 
 """List of pre-trained StyleGAN2 networks located on Google Drive."""
-
-import pickle
 import dnnlib
 import dnnlib.tflib as tflib
+import fickling
 
 #----------------------------------------------------------------------------
 # StyleGAN2 Google Drive root: https://drive.google.com/open?id=1QHc-yF5C3DChRwSdZKcx1w6K8JvSxQi7
@@ -73,7 +72,7 @@ def load_networks(path_or_gdrive_path):
 
     tflib.init_tf()
     with stream:
-        G, D, Gs = pickle.load(stream, encoding='latin1')
+        G, D, Gs = fickling.load(stream, encoding='latin1')
     _cached_networks[path_or_url] = G, D, Gs
     return G, D, Gs
 
